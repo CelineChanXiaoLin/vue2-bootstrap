@@ -14,6 +14,9 @@
       <h3>Email: {{ email }}</h3>
       <h3>Tel: {{ tel }}</h3>
 
+      <h3><a v-bind:href="url1">{{web1}}</a></h3>
+      <h3><a :href="url2">{{web2}}</a></h3>
+
     <button class="greenFont" @click="increase"> +1</button>
     <button class="redFont" @click="decrease"> -1</button>
     <br>

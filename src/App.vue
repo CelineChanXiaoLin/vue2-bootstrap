@@ -1,76 +1,156 @@
 <template>
   <div id="app">
-      <h2 class="greenFont">My first ever Vue Tutorial</h2>
+  <b-row>
+  <b-col cols="4" v-for="product in products" v-bind:key="product._id">
 
-      <h4 class="blueFont">{{ message }}</h4>
+  <b-card :title="product.name" :img-src="product.image" img-alt="Image" img-top tag="article" style="max-width: 20rem;" class="mb-2">
+  
+     <b-card-text>{{product.price}}</b-card-text>
+    
+      <b-button variant="success" v-on:click="Plus5(product)">+5</b-button>
+      <b-button variant="success" v-on:click="Plus1(product)">+</b-button>
+      {{product.quantity}}
+      <b-button variant="danger" v-on:click="Minus1(product)">-</b-button>
+      <b-button variant="danger" v-on:click="Minus5(product)">-5</b-button>
+      Subtotal:RM {{product.quantity*product.price}}
+</b-card>
+  </b-col>
+  </b-row>
+  ============Price Total======================
+  <div v-for="product in products" :key="product">
+  <p v-if="product.quantity>0">
+    {{product.name}}
+   </p>
+   </div> 
+   Subtotal: {{calSubtotal}}
+    <select v-model="shippingfee">
+    <option v-for="flavor in areaOptions" :value="flavor.fees" :key="flavor._id"  :selected="option == '5'">{{flavor.text}}</option>
+  </select>
+  Shipping Fees: {{shippingfee}}<br>
+  Grand Total: {{calTotal}}
 
-      Name:<input type="text" v-model="name"/> <br> 
-      Addr:<input type="text" v-model="addr"/> <br> 
-      Email:<input type="text" v-model="email"/> <br> 
-      Tel:<input type="text" v-model="tel"/>  <br><br>
 
-      <h2>Name : {{ name }}</h2>
-      <h3>Addr :{{ addr }}</h3>
-      <h3>Email: {{ email }}</h3>
-      <h3>Tel: {{ tel }}</h3>
-
-      <h3><a v-bind:href="url1">{{web1}}</a></h3>
-      <h3><a :href="url2">{{web2}}</a></h3>
-
-    <button class="greenFont" @click="increase"> +1</button>
-    <button class="redFont" @click="decrease"> -1</button>
-    <br>
-    <button class="greenFont" @click="increase5"> +5</button>
-    <button class="redFont" @click="decrease5"> -5</button>
-
-    <h2> {{counter}}</h2>
-    <br>
-    <img v-bind:src="image1">
-    <img :src="image2">
-    <img :src="image3">
-    <br>
-
-</div>
+  </div>
 </template>
 
 <script>
+
 export default {
   name: "App",
   components: {},
   data() {
     return {
-      message: "Please enter your details below",
       name: "",
-      addr: "",
+      mobile: "",
       email: "",
-      tel: "",
-      image1: "apple.jpg",
-      image2: "orange.jpg",
-      image3: "strawberry.jpg",
-      url1: "https://apple.com",
-      url2: "https://orange.com",
-      url3: "https://abc.com",
-      web1: "Fruit Company",
-      web2: "Orange Company",
-      web3: "Another Fruit Company",
-      counter: 0
+      quantity: 0,
+      totalSales: 0,
+      discountPct: 0,
+      pickupArea: 0,
+      shippingfee:5,
+      areaOptions: [
+        { value: "0", text: "Mont Kiara", fees:5 },
+        { value: "1", text: "Cheras", fees:4},
+        { value: "2", text: "Puchong", fees:3 },
+        { value: "3", text: "Kepong", fees:2 },
+        { value: "4", text: "Others", fees:1 },
+      ],
+      products: [
+        {
+          name: "Apple",
+          quantity: 0,
+          price: 10,
+          stock: 0,
+          image: "apple.jpg",
+        },
+        {
+          name: "Orange",
+          quantity: 0,
+          price: 12,
+          stock: 0,
+          image: "orange.jpg",
+        },
+        {
+          name: "Strawberry",
+          quantity: 0,
+          price: 9,
+          stock: 0,
+          image: "strawberry.jpg",
+        },
+        {
+          name: "Strawberry 2",
+          quantity: 0,
+          price: 7,
+          stock: 0,
+          image: "strawberry.jpg",
+        },
+        {
+          name: "Orange 2",
+          quantity: 0,
+          price: 13,
+          stock: 0,
+          image: "orange.jpg",
+        },
+        {
+          name: "Apple 2",
+          quantity: 0,
+          price: 11,
+          stock: 0,
+          image: "apple.jpg",
+        },
+      ],
     };
   },
+  created() {
+     
+    },
   methods: {
-    increase() {
-      this.counter = this.counter + 1;
+  Plus5(product) {
+      product.quantity+=5;
     },
-    decrease() {
-      this.counter = this.counter - 1;
+    Plus1(product){
+      product.quantity+=1;
     },
-    increase5() {
-      this.counter = this.counter + 5;
+    Minus5(product){
+      
+      if(product.quantity-5>=0){
+        product.quantity-=5;
+      }
     },
-    decrease5() {
-      this.counter = this.counter - 5;
-    }
+    Minus1(product){
+      
+      if(!product.quantity-1<0){
+        product.quantity-=1;
+      }
+    },
+    
+    
+    
   },
-  computed: {},
+  computed: {
+  calSubtotal() {
+    var Subtotal=0;
+    for(let i=0;i<this.products.length;i++){
+      Subtotal+=this.products[i].quantity*this.products[i].price;
+
+    }
+    
+    return Subtotal;
+  },
+  calTotal(){
+    var grandTotal=0;
+    for(let i=0;i<this.products.length;i++){
+      grandTotal+=this.products[i].quantity*this.products[i].price;
+
+    }
+
+    grandTotal+=this.shippingfee;
+    return grandTotal;
+
+  }
+  
+
+  },
 };
 </script>
 

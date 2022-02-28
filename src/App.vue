@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <b-container>
   <b-row>
   <b-col cols="4" v-for="product in products" v-bind:key="product._id">
 
@@ -11,25 +12,26 @@
       <b-button variant="success" v-on:click="Plus1(product)">+</b-button>
       {{product.quantity}}
       <b-button variant="danger" v-on:click="Minus1(product)">-</b-button>
-      <b-button variant="danger" v-on:click="Minus5(product)">-5</b-button>
+      <b-button variant="danger" v-on:click="Minus5(product)">-5</b-button><br>
       Subtotal:RM {{product.quantity*product.price}}
 </b-card>
   </b-col>
   </b-row>
+    
   ============Price Total======================
   <div v-for="product in products" :key="product">
   <p v-if="product.quantity>0">
     {{product.name}}
    </p>
    </div> 
-   Subtotal: {{calSubtotal}}
+   Subtotal: {{calSubtotal}}<br>
     <select v-model="shippingfee">
     <option v-for="flavor in areaOptions" :value="flavor.fees" :key="flavor._id"  :selected="option == '5'">{{flavor.text}}</option>
-  </select>
+  </select><br>
   Shipping Fees: {{shippingfee}}<br>
   Grand Total: {{calTotal}}
 
-
+</b-container>
   </div>
 </template>
 
